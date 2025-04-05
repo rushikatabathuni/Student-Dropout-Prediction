@@ -17,6 +17,12 @@ import {
   TabPanel,
   Text,
   useColorMode,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from '@chakra-ui/react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -40,6 +46,7 @@ function Predict() {
   const [file, setFile] = useState(null);
   const [results, setResults] = useState(null);
   const [chartData, setChartData] = useState(null);
+  const [predictionList, setPredictionList] = useState([]);
   const toast = useToast();
 
   const handleInputChange = (e) => {
@@ -52,8 +59,8 @@ function Predict() {
 
   const handleSinglePrediction = async (e) => {
     e.preventDefault();
-    const mappedData = { ...formData }; // No need to map as the form data already uses the correct feature names
-    console.log("Mapped form data before sending:", mappedData); 
+    const mappedData = { ...formData };
+    console.log("Mapped form data before sending:", mappedData);
     try {
       const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
@@ -97,7 +104,7 @@ function Predict() {
         body: formData,
       });
 
-       console.log("Response status:", response.status); // Log the status
+      console.log("Response status:", response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -107,6 +114,12 @@ function Predict() {
 
       const data = await response.json();
       setResults(data.predictions);
+
+      const predictionList = data.predictions.map((prediction, index) => ({
+        id: index + 1,
+        prediction: prediction === 0 ? 'No Dropout Risk' : 'Dropout Risk',
+      }));
+      setPredictionList(predictionList);
 
       const dropouts = data.predictions.filter(p => p === 1).length;
       const nonDropouts = data.predictions.filter(p => p === 0).length;
@@ -130,7 +143,6 @@ function Predict() {
     }
   };
 
-
   const containerStyle = {
     bg: colorMode === 'light' ? 'gray.50' : 'gray.900',
     borderRadius: 'xl',
@@ -151,7 +163,7 @@ function Predict() {
         <Heading mb={6} textAlign="center" color={colorMode === 'light' ? 'blue.600' : 'blue.300'}>
           Predict Student Dropout
         </Heading>
-        
+
         <Tabs isFitted variant="enclosed" colorScheme="blue">
           <TabList mb="1em">
             <Tab _selected={{ color: 'blue.500', borderColor: 'blue.500', fontWeight: 'bold' }}>
@@ -224,7 +236,7 @@ function Predict() {
                       min={0}
                       max={10}
                     />
-                  </FormControl>  
+                  </FormControl>
                   <FormControl isRequired>
                     <FormLabel>Curricular Units 1st Sem Enrolled</FormLabel>
                     <Input
@@ -325,10 +337,9 @@ function Predict() {
                       <option value="44">44 - Higher Education - Doctorate (3rd Cycle)</option>
                     </Select>
                   </FormControl>
-
-                  <Button 
-                    type="submit" 
-                    colorScheme="blue" 
+                  <Button
+                    type="submit"
+                    colorScheme="blue"
                     width="full"
                     size="lg"
                     fontWeight="bold"
@@ -338,12 +349,11 @@ function Predict() {
                     Predict
                   </Button>
                 </VStack>
-
                 {results && (
-                  <Box 
-                    mt={6} 
-                    p={4} 
-                    borderRadius="md" 
+                  <Box
+                    mt={6}
+                    p={4}
+                    borderRadius="md"
                     borderWidth={1}
                     bg={colorMode === 'light' ? 'blue.50' : 'blue.900'}
                     borderColor={colorMode === 'light' ? 'blue.300' : 'blue.600'}
@@ -351,8 +361,8 @@ function Predict() {
                     <Text fontSize="xl" fontWeight="bold">
                       Prediction:
                     </Text>
-                    <Text fontWeight="bold" color={Number(results.prediction )=== 0 ? 'red' : 'green'}>
-                    {Number(results.prediction) === 1 ? 'No Dropout Risk' : 'Dropout Risk'}
+                    <Text fontWeight="bold" color={Number(results.prediction) === 1 ? 'green' : 'red'}>
+                      {Number(results.prediction) === 1 ? 'No Dropout Risk' : 'Dropout Risk'}
                     </Text>
                   </Box>
                 )}
@@ -370,10 +380,10 @@ function Predict() {
                       focusBorderColor="blue.400"
                     />
                   </FormControl>
-                  <Button 
-                    type="submit" 
-                    colorScheme="blue" 
-                    width="full" 
+                  <Button
+                    type="submit"
+                    colorScheme="blue"
+                    width="full"
                     size="lg"
                     fontWeight="bold"
                     _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg' }}
@@ -384,8 +394,31 @@ function Predict() {
                 </VStack>
               </Box>
               {chartData && (
-                <Box mt={3}>
+                <Box mt={6} width="50%" mx="auto">
                   <Pie data={chartData} />
+                </Box>
+              )}
+              {predictionList.length > 0 && (
+                <Box mt={6} overflowX="auto">
+                  <Text fontSize="xl" fontWeight="bold" mb={4}>
+                    Predictions:
+                  </Text>
+                  <Table variant="striped" colorScheme="gray" size="sm">
+                    <Thead>
+                      <Tr>
+                        <Th>ID</Th>
+                        <Th>Prediction</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {predictionList.map((item) => (
+                        <Tr key={item.id}>
+                          <Td>{item.id}</Td>
+                          <Td>{item.prediction}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
                 </Box>
               )}
             </TabPanel>
