@@ -42,7 +42,7 @@ function Home() {
               Student Dropout Prediction Model
             </Heading>
             <Text fontSize="lg" color={colorMode === 'light' ? 'gray.600' : 'gray.300'}>
-              An advanced machine learning model to predict student dropout probability
+              A simple machine learning model to predict student dropout probability, head to our prediction page for making predictions and about page for more infromation about the project.
             </Text>
           </Box>
 
@@ -52,7 +52,7 @@ function Home() {
                 Model Accuracy
               </StatLabel>
               <StatNumber fontSize="3xl" color={colorMode === 'light' ? 'blue.500' : 'blue.300'}>
-                95.2%
+                89%
               </StatNumber>
             </Stat>
             <Stat {...statStyle}>
@@ -60,7 +60,7 @@ function Home() {
                 ROC-AUC Score
               </StatLabel>
               <StatNumber fontSize="3xl" color={colorMode === 'light' ? 'blue.500' : 'blue.300'}>
-                0.97
+                0.92
               </StatNumber>
             </Stat>
             <Stat {...statStyle}>
@@ -68,7 +68,7 @@ function Home() {
                 F1 Score
               </StatLabel>
               <StatNumber fontSize="3xl" color={colorMode === 'light' ? 'blue.500' : 'blue.300'}>
-                0.94
+                0.85
               </StatNumber>
             </Stat>
           </SimpleGrid>
@@ -81,11 +81,17 @@ function Home() {
               Our model uses key academic and demographic features including:
             </Text>
             <VStack align="start" mt={4} spacing={2} pl={4}>
-              <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Curricular units performance</Text>
-              <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Age at enrollment</Text>
-              <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Admission grade</Text>
-              <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Previous qualification</Text>
-              <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Socio-demographic factors</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Curricular units (1st sem) approved: Number of Subjects Passed</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Age at enrollment</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Admission grade: Grade in Admission test(0-200)</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Curricular units (1st sem) evaluations: Number of Subject's Exam Attempted</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Previous qualification grade</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Tuition fees up to date</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Application order</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Curricular units (1st sem) enrolled: Number of Subjects enrolled.</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Gender</Text>
+            <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>• Mother's qualification</Text>
+
             </VStack>
           </Box>
         </VStack>

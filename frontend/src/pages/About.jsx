@@ -59,7 +59,7 @@ function About() {
               Model Details
             </Heading>
             <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>
-              [Model description to be filled]
+            The prediction model is a Random Forest Classifier (RFC) designed to predict student status as Dropout, Graduate, or Enrolled. It utilizes a set of key features including curricular units approved and enrolled, age at enrollment, admission grade, tuition fees status, and more. The model was trained on a balanced dataset using SMOTE to address class imbalance, achieving an accuracy of approximately 74% and a weighted-average F1 score of 0.7386482525504112. With a robust ensemble approach and strong ROC-AUC score, the model effectively distinguishes between classes, providing a reliable tool for predicting student outcomes.
             </Text>
           </Box>
 
@@ -72,12 +72,12 @@ function About() {
               Author
             </Heading>
             <Text color={colorMode === 'light' ? 'gray.700' : 'gray.300'}>
-              [Author information to be filled]
+              This project is done by Rushi Katabathuni, a student pursuing B.Tech in Computer Science and Engineering at Keshav Memorial College Of Engineering. This project is done aiming to improve understanding of various machine learning and deep learning models and also enter the field of FrontEnd Development using React JS.
             </Text>
           </Box>
 
           <HStack spacing={4} justify="center">
-            <Link href="[Your GitHub URL]" isExternal>
+            <Link href="https://github.com/rushikatabathuni/" isExternal>
               <Button 
                 leftIcon={<FaGithub />} 
                 colorScheme="gray"
@@ -91,7 +91,7 @@ function About() {
                 GitHub
               </Button>
             </Link>
-            <Link href="[Your LinkedIn URL]" isExternal>
+            <Link href="https://www.linkedin.com/in/rushi-katabathuni-3851072b7/" isExternal>
               <Button 
                 leftIcon={<FaLinkedin />} 
                 colorScheme="linkedin"

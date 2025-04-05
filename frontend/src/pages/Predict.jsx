@@ -26,16 +26,16 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 function Predict() {
   const { colorMode } = useColorMode();
   const [formData, setFormData] = useState({
-    curricular_units_1st_sem_approved: '',
-    age_at_enrollment: '',
-    admission_grade: '',
-    curricular_units_1st_sem_evaluations: '',
-    previous_qualification_grade: '',
-    tuition_fees_up_to_date: 'yes',
-    application_order: '',
-    curricular_units_1st_sem_enrolled: '',
-    gender: '',
-    mothers_qualification: '',
+    Curricular_units_1st_sem_approved: 0,
+    Age_at_enrollment: 0,
+    Admission_grade: 0,
+    Curricular_units_1st_sem_evaluations: 0,
+    Previous_qualification_grade: 0,
+    Tuition_fees_up_to_date: 0,
+    Application_order: 0,
+    Curricular_units_1st_sem_enrolled: 0,
+    Gender: 0,
+    Mothers_qualification: 0,
   });
   const [file, setFile] = useState(null);
   const [results, setResults] = useState(null);
@@ -52,13 +52,15 @@ function Predict() {
 
   const handleSinglePrediction = async (e) => {
     e.preventDefault();
+    const mappedData = { ...formData }; // No need to map as the form data already uses the correct feature names
+    console.log("Mapped form data before sending:", mappedData); 
     try {
-      const response = await fetch('http://localhost:5000/predict', {
+      const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(mappedData),
       });
       const data = await response.json();
       setResults(data);
@@ -157,10 +159,12 @@ function Predict() {
                     <FormLabel>Curricular Units 1st Sem Approved</FormLabel>
                     <Input
                       type="number"
-                      name="curricular_units_1st_sem_approved"
-                      value={formData.curricular_units_1st_sem_approved}
+                      name="Curricular_units_1st_sem_approved"
+                      value={formData.Curricular_units_1st_sem_approved}
                       onChange={handleInputChange}
                       focusBorderColor="blue.400"
+                      min={0}
+                      max={10}
                     />
                   </FormControl>
 
@@ -168,24 +172,146 @@ function Predict() {
                     <FormLabel>Age at Enrollment</FormLabel>
                     <Input
                       type="number"
-                      name="age_at_enrollment"
-                      value={formData.age_at_enrollment}
+                      name="Age_at_enrollment"
+                      value={formData.Age_at_enrollment}
                       onChange={handleInputChange}
                       focusBorderColor="blue.400"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Admission Grade(Out of 200)</FormLabel>
+                    <Input
+                      type="number"
+                      name="Admission_grade"
+                      value={formData.Admission_grade}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                      min={0}
+                      max={200}
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Previous Qualification Grade(Out of 200)</FormLabel>
+                    <Input
+                      type="number"
+                      name="Previous_qualification_grade"
+                      value={formData.Previous_qualification_grade}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                      min={0}
+                      max={200}
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Curricular Units 1st Sem Evaluations</FormLabel>
+                    <Input
+                      type="number"
+                      name="Curricular_units_1st_sem_evaluations"
+                      value={formData.Curricular_units_1st_sem_evaluations}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                      min={0}
+                      max={10}
+                    />
+                  </FormControl>  
+                  <FormControl isRequired>
+                    <FormLabel>Curricular Units 1st Sem Enrolled</FormLabel>
+                    <Input
+                      type="number"
+                      name="Curricular_units_1st_sem_enrolled"
+                      value={formData.Curricular_units_1st_sem_enrolled}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                      min={0}
+                      max={10}
                     />
                   </FormControl>
 
                   <FormControl isRequired>
                     <FormLabel>Gender</FormLabel>
                     <Select
-                      name="gender"
-                      value={formData.gender}
+                      name="Gender"
+                      value={formData.Gender}
                       onChange={handleInputChange}
                       focusBorderColor="blue.400"
                     >
                       <option value="">Select Gender</option>
-                      <option value="M">Male</option>
-                      <option value="F">Female</option>
+                      <option value={1}>Male</option>
+                      <option value={0}>Female</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Tuition Fees Up-to-Date</FormLabel>
+                    <Select
+                      name="Tuition_fees_up_to_date"
+                      value={formData.Tuition_fees_up_to_date}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                    >
+                      <option value="">Select</option>
+                      <option value={1}>Yes</option>
+                      <option value={0}>No</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Application Order</FormLabel>
+                    <Select
+                      name="Application_order"
+                      value={formData.Application_order}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                    >
+                      <option value="">Select Application Order</option>
+                      <option value="0">0 - First Choice</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9 - Last Choice</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Mother's Qualification</FormLabel>
+                    <Select
+                      name="Mothers_qualification"
+                      value={formData.Mothers_qualification}
+                      onChange={handleInputChange}
+                      focusBorderColor="blue.400"
+                    >
+                      <option value="">Select Qualification</option>
+                      <option value="1">1 - Secondary Education - 12th Year or Equivalent</option>
+                      <option value="2">2 - Higher Education - Bachelor's Degree</option>
+                      <option value="3">3 - Higher Education - Degree</option>
+                      <option value="4">4 - Higher Education - Master's</option>
+                      <option value="5">5 - Higher Education - Doctorate</option>
+                      <option value="6">6 - Frequency of Higher Education</option>
+                      <option value="9">9 - 12th Year - Not Completed</option>
+                      <option value="10">10 - 11th Year - Not Completed</option>
+                      <option value="11">11 - 7th Year (Old)</option>
+                      <option value="12">12 - Other - 11th Year of Schooling</option>
+                      <option value="14">14 - 10th Year of Schooling</option>
+                      <option value="18">18 - General Commerce Course</option>
+                      <option value="19">19 - Basic Education 3rd Cycle (9th/10th/11th Year)</option>
+                      <option value="22">22 - Technical-professional Course</option>
+                      <option value="26">26 - 7th Year of Schooling</option>
+                      <option value="27">27 - 2nd Cycle of General High School</option>
+                      <option value="29">29 - 9th Year - Not Completed</option>
+                      <option value="30">30 - 8th Year of Schooling</option>
+                      <option value="34">34 - Unknown</option>
+                      <option value="35">35 - Can't Read or Write</option>
+                      <option value="36">36 - Can Read (No 4th Year)</option>
+                      <option value="37">37 - Basic Education 1st Cycle (4th/5th Year)</option>
+                      <option value="38">38 - Basic Education 2nd Cycle (6th/7th/8th Year)</option>
+                      <option value="39">39 - Technological Specialization Course</option>
+                      <option value="40">40 - Higher Education - Degree (1st Cycle)</option>
+                      <option value="41">41 - Specialized Higher Studies Course</option>
+                      <option value="42">42 - Professional Higher Technical Course</option>
+                      <option value="43">43 - Higher Education - Master (2nd Cycle)</option>
+                      <option value="44">44 - Higher Education - Doctorate (3rd Cycle)</option>
                     </Select>
                   </FormControl>
 
@@ -209,35 +335,34 @@ function Predict() {
                     borderRadius="md" 
                     borderWidth={1}
                     bg={colorMode === 'light' ? 'blue.50' : 'blue.900'}
-                    borderColor={colorMode === 'light' ? 'blue.200' : 'blue.700'}
+                    borderColor={colorMode === 'light' ? 'blue.300' : 'blue.600'}
                   >
-                    <Heading size="md" mb={2}>Prediction Result</Heading>
-                    <Text fontWeight="bold" color={results === 1 ? 'red.500' : 'green.500'}>
-                      {results === 1 ? 'High risk of dropout' : 'Low risk of dropout'}
+                    <Text fontSize="xl" fontWeight="bold">
+                      Prediction:
+                    </Text>
+                    <Text fontWeight="bold" color={Number(results.prediction )=== 0 ? 'red' : 'green'}>
+                    {Number(results.prediction) === 1 ? 'No Dropout Risk' : 'Dropout Risk'}
                     </Text>
                   </Box>
                 )}
               </Box>
             </TabPanel>
-
             <TabPanel>
               <Box {...formStyle}>
-                <VStack spacing={4}>
-                  <FormControl>
-                    <FormLabel>Upload CSV File</FormLabel>
+                <VStack spacing={4} as="form" onSubmit={handleBatchPrediction}>
+                  <FormControl isRequired>
+                    <FormLabel>Upload CSV File for Batch Prediction</FormLabel>
                     <Input
                       type="file"
                       accept=".csv"
                       onChange={handleFileChange}
-                      p={2}
                       focusBorderColor="blue.400"
                     />
                   </FormControl>
-
-                  <Button
-                    onClick={handleBatchPrediction}
-                    colorScheme="blue"
-                    width="full"
+                  <Button 
+                    type="submit" 
+                    colorScheme="blue" 
+                    width="full" 
                     size="lg"
                     fontWeight="bold"
                     _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg' }}
@@ -245,22 +370,13 @@ function Predict() {
                   >
                     Upload and Predict
                   </Button>
-
-                  {chartData && (
-                    <Box 
-                      mt={6} 
-                      w="full" 
-                      maxW="400px" 
-                      p={4} 
-                      bg={colorMode === 'light' ? 'white' : 'gray.700'}
-                      borderRadius="lg"
-                      shadow="md"
-                    >
-                      <Pie data={chartData} />
-                    </Box>
-                  )}
                 </VStack>
               </Box>
+              {chartData && (
+                <Box mt={6}>
+                  <Pie data={chartData} />
+                </Box>
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>
