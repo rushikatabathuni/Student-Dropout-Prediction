@@ -75,9 +75,8 @@ The Flask backend handles:
   ```
 
 Where:
-- `0` = Enrolled  
-- `1` = Graduate  
-- `2` = Dropout  
+- `0` = Dropout 
+- `1` = Non Dropout  
 
 ---
 
