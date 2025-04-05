@@ -92,16 +92,25 @@ function Predict() {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:5000/predict-batch', {
+      const response = await fetch('http://127.0.0.1:5000/predict-batch', {
         method: 'POST',
         body: formData,
       });
+
+       console.log("Response status:", response.status); // Log the status
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Fetch error:", response.status, errorText);
+        throw new Error(`HTTP error! status: ${response.status}, text: ${errorText}`);
+      }
+
       const data = await response.json();
       setResults(data.predictions);
-      
+
       const dropouts = data.predictions.filter(p => p === 1).length;
       const nonDropouts = data.predictions.filter(p => p === 0).length;
-      
+
       setChartData({
         labels: ['Dropout Risk', 'No Dropout Risk'],
         datasets: [{
@@ -110,15 +119,17 @@ function Predict() {
         }],
       });
     } catch (error) {
+      console.error("Prediction error:", error);
       toast({
         title: 'Error',
-        description: 'Failed to process file',
+        description: 'Failed to process file: ' + error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
     }
   };
+
 
   const containerStyle = {
     bg: colorMode === 'light' ? 'gray.50' : 'gray.900',
@@ -373,7 +384,7 @@ function Predict() {
                 </VStack>
               </Box>
               {chartData && (
-                <Box mt={6}>
+                <Box mt={3}>
                   <Pie data={chartData} />
                 </Box>
               )}
